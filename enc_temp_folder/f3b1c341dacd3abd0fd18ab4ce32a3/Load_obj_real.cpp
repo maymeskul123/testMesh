@@ -37,22 +37,39 @@ Load_obj_real::Load_obj_real(std::string path)
 
             if (sub1.compare("v ") == 0)
             {
-                //found = "found v";
+                found = "found v";
                 Save_list(&vertices_list, &line);
             }
             if (sub1.compare ("f ") == 0)
             {
-                //found = "found f";                
+                found = "found f";
+                //Save_list(&vertices_list, &line);
             }
             if (sub1.compare("vt") == 0)
             {
-                //found = "found vt";
-                Save_list(&uv_list, &line);                
+                found = "found vt";
+                Save_list(&uv_list, &line);
+                /*std::string sub2 = line.substr(2, line.length() - 1);
+                std::stringstream test(sub2);
+                std::string segment;
+
+                while (std::getline(test, segment, ' '))
+                {
+                    uv_list.push_back(segment);
+                }*/
             }
             if (sub1.compare("vn") == 0)
             {
-                //found = "found vn";
+                found = "found vn";
                 Save_list(&normals_list, &line);
+                /*std::string sub2 = line.substr(2, line.length() - 1);
+                std::stringstream test(sub2);
+                std::string segment;
+
+                while (std::getline(test, segment, ' '))
+                {
+                    normals_list.push_back(segment);
+                }*/
             }
 
             //std::cout << found << std::endl;
