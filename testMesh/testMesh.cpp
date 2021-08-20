@@ -3,12 +3,14 @@
 
 #include <iostream>
 #include "Load_obj_real.h"
+#include "Mesh.h"
 
 int main(int argc, char *argv[])
 {
     /*for (int count = 0; count < argc; ++count)
         std::cout << count << " " << argv[count] << '\n';*/
     Load_obj_real load = Load_obj_real("mesh_fit_visibility_n_15.obj");
+    Mesh mesh = Mesh(load.vertices_list, load.uv_list, load.triangles_list, load.normals_list, load.lines_list);
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
