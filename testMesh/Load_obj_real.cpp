@@ -5,11 +5,12 @@
 #include <fstream>
 #include <sstream>
 
-void Load_obj_real::Save_list(std::vector<std::string> *vector_list, std::string *filesLine)
+void Load_obj_real::Save_list(std::vector <std::vector<std::string>> *vector_list, std::string *filesLine)
 {
     std::stringstream sub2(filesLine->substr(0, filesLine->length() - 1));    
     std::string segment;
     bool first = true;
+    std::vector <std::string> temp_str;
     while (std::getline(sub2, segment, ' '))
     {
         if (first)
@@ -18,9 +19,10 @@ void Load_obj_real::Save_list(std::vector<std::string> *vector_list, std::string
         }
         else
         {
-            vector_list->push_back(segment);
+            temp_str.push_back(segment);
         }
     }
+    vector_list->push_back(temp_str);
 }
 
 void Load_obj_real::Save_list_f(std::vector<std::vector<int>>*, std::string *filesLine)
