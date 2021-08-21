@@ -2,24 +2,26 @@
 //
 
 #include <iostream>
+#include <sstream>
+#include <fstream>
 #include "Load_obj_real.h"
 #include "Mesh.h"
+#include "stdio.h"
+#include <chrono>
+#include <vector>
 
-int main(int argc, char *argv[])
-{
-    /*for (int count = 0; count < argc; ++count)
-        std::cout << count << " " << argv[count] << '\n';*/
+
+
+
+
+int main(int argc, char* argv[])
+{    
+    auto start = std::chrono::high_resolution_clock::now();
     Load_obj_real load = Load_obj_real("mesh_fit_visibility_n_15.obj");
-    Mesh mesh = Mesh(&load.vertices_list, &load.uv_list, &load.triangles_list);
+    Mesh mesh = Mesh(&load.vertices_list, &load.uv_list, &load.triangles_list);    
+    mesh.Write_obj("1111.obj");    
+    auto end = std::chrono::high_resolution_clock::now();    
+    std::chrono::duration<double> dur_time = end - start;    
+    std::cout << dur_time.count() << "s\n" << std::endl;
+    std::cin.get();
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
