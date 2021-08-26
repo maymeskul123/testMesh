@@ -73,76 +73,73 @@ void Load_obj_real::Save_list_f(std::vector<std::vector <std::vector <int>>>*, s
 
 Load_obj_real::Load_obj_real(std::string path)
 {    
-    //Op_file(path);
-
-    std::string line;
-    std::ifstream in(path); // open file
-    
-    if (in.is_open())
-    {
-        while (getline(in, line))
-        {            
-            std::string sub1 = line.substr(0, 2);
-
-            if (sub1.compare("v ") == 0)
-            {                
-                Save_list(&vertices_list, &line);
-            }
-            if (sub1.compare ("f ") == 0)
-            {
-                Save_list_f(&triangles_list, &line);
-            }
-            if (sub1.compare("vt") == 0)
-            {                
-                Save_list(&uv_list, &line);                
-            }
-            if (sub1.compare("vn") == 0)
-            {                
-                Save_list(&normals_list, &line);
-            }            
-        }
-    }
-    in.close();     // close file
-    
+    Op_file(path);    
 }
 
 Load_obj_real::~Load_obj_real()
 {
 }
 
-//void Load_obj_real::Op_file(std::string path)
-//{    
-//    FILE* file_;
-//    char c;
-//    unsigned int i = 0;
-//    file_ = fopen(path.c_str(), "r");
-//    while (1) {
-//        c = fgetc(file_);
-//        buf[i] = c;
-//        printf("%d %c\n", i, buf[i]);
-//        
-//        if (feof(file_)) {
-//            break;
-//        }
-//        i++;
-//        //printf("%c", c);
-//    }
-//
-//    ////std::ifstream in(path);
-//    //std::fstream in(path);    
-//
-//
-//    //int i = 0;
-//    //if (in.is_open())
-//    //{
-//    //    while (getline(in, line))
-//    //    {
-//    //        i++;
-//    //        //std::cout << line;
-//    //        //buffer_str.push_back(line);
-//    //    }
-//    //}
-//    //in.close();
-//    // Close stream if it isn't NULL
-//    fclose(file_);
-//}
+void Load_obj_real::Op_file(std::string path)
+{
+    std::ifstream ifs(path, std::fstream::in);
+
+    // get pointer to associated buffer object
+    std::filebuf* pbuf = ifs.rdbuf();
+
+    // get file size using buffer's members
+    //std::size_t size = pbuf->pubseekoff(0, ifs.end, ifs.in);
+    std::size_t size_all = pbuf->pubseekoff(0, ifs.end, ifs.in);    
+    std::size_t size = 0xffff;
+    unsigned int times = size_all / size;
+    char* buffer = new char[size];    
+    std::size_t pos = 0;
+    std::string line;
+    std::string sub1;
+    for (unsigned int i = 0; i < times + 1; i++)
+    {
+        //pbuf->pubseekpos(pos, ifs.in);
+        pbuf->pubseekpos(pos, ifs.in);
+        // allocate memory to contain file data
+
+        // get file data
+        pbuf->sgetn(buffer, size);                
+        
+       
+            for(unsigned int p = 0; p < size; p++)
+            {            
+                if (buffer[p] == '\n')
+                {
+                    sub1 = line.substr(0, 2);
+
+                    if (sub1.compare("v ") == 0)
+                    {
+                        Save_list(&vertices_list, &line);
+                    }
+                    if (sub1.compare("f ") == 0)
+                    {
+                        Save_list_f(&triangles_list, &line);
+                    }
+                    if (sub1.compare("vt") == 0)
+                    {
+                        Save_list(&uv_list, &line);
+                    }
+                    if (sub1.compare("vn") == 0)
+                    {
+                        Save_list(&normals_list, &line);
+                    }
+                    line.clear();
+                }
+                else
+                {
+                    line.push_back(buffer[p]);
+                }
+                pos = pos + p;
+            }
+    }
+    //printf("\n Size all %d Size current %d\n", size_all, times);
+    ifs.close();
+    // write content to stdout
+    //std::cout.write(buffer, size);
+    delete[] buffer;
+}

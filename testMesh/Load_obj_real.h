@@ -15,5 +15,5 @@ public:
 	void Save_list_f(std::vector<std::vector <std::vector <int>>>*, std::string*);
 	Load_obj_real(std::string);
 	~Load_obj_real();
-	//void Op_file(std::string path);
+	void Op_file(std::string path);
 };

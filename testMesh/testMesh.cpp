@@ -1,7 +1,4 @@
-﻿// testMesh.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-#include <iostream>
+﻿#include <iostream>
 #include <sstream>
 #include <fstream>
 #include "Load_obj_real.h"
@@ -10,7 +7,7 @@
 #include <chrono>
 #include <vector>
 
-
+#define _CRT_SECURE_NO_WARNINGS
 
 
 
@@ -23,5 +20,6 @@ int main(int argc, char* argv[])
     auto end = std::chrono::high_resolution_clock::now();    
     std::chrono::duration<double> dur_time = end - start;    
     std::cout << dur_time.count() << "s\n" << std::endl;
+    std::cout << "Press Enter to end...";
     std::cin.get();
 }
